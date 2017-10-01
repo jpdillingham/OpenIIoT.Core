@@ -52,8 +52,7 @@ using OpenIIoT.Core.Service.WebApi;
 using OpenIIoT.SDK;
 using OpenIIoT.SDK.Common;
 using OpenIIoT.SDK.Packaging;
-
-//using Swashbuckle.Swagger.Annotations;
+using Swashbuckle.Swagger.Annotations;
 using Utility.OperationResult;
 
 namespace OpenIIoT.Core.Packaging.WebApi
@@ -93,10 +92,10 @@ namespace OpenIIoT.Core.Packaging.WebApi
         /// <returns>A Result containing the result of the operation.</returns>
         [HttpDelete]
         [Route("{fqn}")]
-        //[SwaggerResponse(HttpStatusCode.OK, "The Package was deleted.")]
-        //[SwaggerResponse(HttpStatusCode.BadRequest, "The specified Fully Qualified Name is invalid.", typeof(string))]
-        //[SwaggerResponse(HttpStatusCode.NotFound, "A Package with the specified Fully Qualified Name could not be found.")]
-        //[SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
+        [SwaggerResponse(HttpStatusCode.OK, "The Package was deleted.")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "The specified Fully Qualified Name is invalid.", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.NotFound, "A Package with the specified Fully Qualified Name could not be found.")]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
         public async Task<HttpResponseMessage> DeletePackage(string fqn)
         {
             Result result = new Result();
@@ -189,7 +188,7 @@ namespace OpenIIoT.Core.Packaging.WebApi
         /// <returns>A Result containing the result of the operation and a list of Packages.</returns>
         [Route("")]
         [HttpGet]
-        //[SwaggerResponse(HttpStatusCode.OK, "The list operation completed successfully.", typeof(List<Package>))]
+        [SwaggerResponse(HttpStatusCode.OK, "The list operation completed successfully.", typeof(List<Package>))]
         public HttpResponseMessage GetPackages()
         {
             IReadOnlyList<Package> packages = manager.GetManager<IPackageManager>().Packages;
@@ -228,9 +227,9 @@ namespace OpenIIoT.Core.Packaging.WebApi
         [Authorize]
         [Route("")]
         [HttpPost]
-        //[SwaggerResponse(HttpStatusCode.OK, "The Package was created or overwritten.", typeof(Package))]
-        //[SwaggerResponse(HttpStatusCode.BadRequest, "The specified data does not contain a valid Package, is not base 64 encoded, or is of zero length.", typeof(string))]
-        //[SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
+        [SwaggerResponse(HttpStatusCode.OK, "The Package was created or overwritten.", typeof(Package))]
+        [SwaggerResponse(HttpStatusCode.BadRequest, "The specified data does not contain a valid Package, is not base 64 encoded, or is of zero length.", typeof(string))]
+        [SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
         public async Task<HttpResponseMessage> UploadPackage([FromBody]string data)
         {
             // validate the data length
