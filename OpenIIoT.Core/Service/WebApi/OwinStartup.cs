@@ -11,7 +11,8 @@ using OpenIIoT.Core.Platform;
 using OpenIIoT.SDK;
 using OpenIIoT.SDK.Service.WebApi;
 using Owin;
-using Swashbuckle.Application;
+
+//using Swashbuckle.Application;
 using OpenIIoT.SDK.Platform;
 using OpenIIoT.Core.Service.WebApi.Middleware;
 using System.Reflection;
@@ -57,31 +58,34 @@ namespace OpenIIoT.Core.Service.WebApi
             HttpConfiguration config = new HttpConfiguration();
             config.MapHttpAttributeRoutes();
 
-            config
-                .EnableSwagger(swaggerPath, c =>
-                {
-                    c.RootUrl(req => ComputeHostAsSeenByOriginalClient(req));
-                    c.SingleApiVersion("v1", manager.ProductName);
-                    c.IncludeXmlComments($"{manager.ProductName}.XML");
-                    c.DescribeAllEnumsAsStrings();
-                    c.OperationFilter<MimeTypeOperationFilter>();
-                })
-                .EnableSwaggerUi(swaggerUiPath, c =>
-                {
-                    Assembly containingAssembly = Assembly.GetExecutingAssembly();
-                    c.CustomAsset("index", containingAssembly, "OpenIIoT.Core.Service.WebApi.Swagger.index.html");
-                    c.InjectStylesheet(containingAssembly, "OpenIIoT.Core.Service.WebApi.Swagger.style.css");
-                    c.EnableApiKeySupport(WebApiConstants.ApiKeyHeaderName, "header");
-                    c.DisableValidator();
-                });
+            //if (manager.GetManager<IPlatformManager>().Platform.PlatformType == PlatformType.Windows)
+            //{
+            //    config
+            //        .EnableSwagger(swaggerPath, c =>
+            //        {
+            //            c.RootUrl(req => ComputeHostAsSeenByOriginalClient(req));
+            //            c.SingleApiVersion("v1", manager.ProductName);
+            //            c.IncludeXmlComments($"{manager.ProductName}.XML");
+            //            c.DescribeAllEnumsAsStrings();
+            //            c.OperationFilter<MimeTypeOperationFilter>();
+            //        })
+            //        .EnableSwaggerUi(swaggerUiPath, c =>
+            //        {
+            //            Assembly containingAssembly = Assembly.GetExecutingAssembly();
+            //            c.CustomAsset("index", containingAssembly, "OpenIIoT.Core.Service.WebApi.Swagger.index.html");
+            //            c.InjectStylesheet(containingAssembly, "OpenIIoT.Core.Service.WebApi.Swagger.style.css");
+            //            c.EnableApiKeySupport(WebApiConstants.ApiKeyHeaderName, "header");
+            //            c.DisableValidator();
+            //        });
 
-            config
-                .Routes.MapHttpRoute(
-                    name: "HelpShortcut",
-                    routeTemplate: helpPath,
-                    defaults: null,
-                    constraints: null,
-                    handler: new RedirectHandler(SwaggerDocsConfig.DefaultRootUrlResolver, helpShortcut));
+            //    config
+            //        .Routes.MapHttpRoute(
+            //            name: "HelpShortcut",
+            //            routeTemplate: helpPath,
+            //            defaults: null,
+            //            constraints: null,
+            //            handler: new RedirectHandler(SwaggerDocsConfig.DefaultRootUrlResolver, helpShortcut));
+            //}
 
             app.UseWebApi(config);
 

@@ -62,7 +62,8 @@ using OpenIIoT.Core.Security.WebApi.DTO;
 using OpenIIoT.Core.Service.WebApi;
 using OpenIIoT.SDK;
 using OpenIIoT.SDK.Security;
-using Swashbuckle.Swagger.Annotations;
+
+//using Swashbuckle.Swagger.Annotations;
 using Utility.OperationResult;
 
 namespace OpenIIoT.Core.Security.WebApi
@@ -115,8 +116,8 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpGet]
         [Route("roles")]
         [Authorize]
-        [SwaggerResponse(HttpStatusCode.OK, "The list was retrieved successfully.", typeof(IReadOnlyList<Role>))]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.OK, "The list was retrieved successfully.", typeof(IReadOnlyList<Role>))]
+        //[SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
         public HttpResponseMessage RolesGet()
         {
             return Request.CreateResponse(HttpStatusCode.OK, SecurityManager.Roles, JsonFormatter());
@@ -129,10 +130,10 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpDelete]
         [Route("sessions/current")]
         [Authorize]
-        [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.NoContent, "The Session was successfully ended.")]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
+        ////[SwaggerResponseRemoveDefaults]
+        ////[SwaggerResponse(HttpStatusCode.NoContent, "The Session was successfully ended.")]
+        ////[SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
+        ////[SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
         public HttpResponseMessage SessionsEnd()
         {
             HttpResponseMessage retVal;
@@ -160,8 +161,8 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpGet]
         [Route("sessions")]
         [Authorize(Roles = nameof(Role.Administrator))]
-        [SwaggerResponse(HttpStatusCode.OK, "The list was retrieved successfully.", typeof(IReadOnlyList<SessionData>))]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.OK, "The list was retrieved successfully.", typeof(IReadOnlyList<SessionData>))]
+        //[SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
         public HttpResponseMessage SessionsGet()
         {
             IReadOnlyList<SessionData> sessions = SecurityManager.Sessions.Select(s => new SessionData(s)).ToList().AsReadOnly();
@@ -175,8 +176,8 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpGet]
         [Route("sessions/current")]
         [Authorize]
-        [SwaggerResponse(HttpStatusCode.OK, "The current Session was retrieved successfully.", typeof(SessionData))]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.OK, "The current Session was retrieved successfully.", typeof(SessionData))]
+        //[SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
         public HttpResponseMessage SessionsGetCurrent()
         {
             string token = GetSessionToken(Request);
@@ -193,10 +194,10 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpPost]
         [Route("sessions")]
         [AllowAnonymous]
-        [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.Created, "The Session was successfully started.", typeof(SessionData))]
-        [SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "The Session could not be started.", typeof(Result))]
+        //[SwaggerResponseRemoveDefaults]
+        //[SwaggerResponse(HttpStatusCode.Created, "The Session was successfully started.", typeof(SessionData))]
+        //[SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.Unauthorized, "The Session could not be started.", typeof(Result))]
         public HttpResponseMessage SessionsStart([FromBody]SessionStartData data)
         {
             HttpResponseMessage retVal;
@@ -247,12 +248,12 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpPost]
         [Route("users")]
         [Authorize(Roles = nameof(Role.Administrator))]
-        [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.Created, "The User was created.", typeof(UserData))]
-        [SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.Conflict, "The specified User already exists.")]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
+        //[SwaggerResponseRemoveDefaults]
+        //[SwaggerResponse(HttpStatusCode.Created, "The User was created.", typeof(UserData))]
+        //[SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.Conflict, "The specified User already exists.")]
+        //[SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
         public HttpResponseMessage UsersCreate([FromBody]UserCreateData data)
         {
             HttpResponseMessage retVal;
@@ -316,12 +317,12 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpDelete]
         [Route("users/{name}")]
         [Authorize(Roles = nameof(Role.Administrator))]
-        [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.NoContent, "The User was deleted.")]
-        [SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.NotFound, "The User does not exist.")]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
+        ////[SwaggerResponseRemoveDefaults]
+        ////[SwaggerResponse(HttpStatusCode.NoContent, "The User was deleted.")]
+        ////[SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
+        ////[SwaggerResponse(HttpStatusCode.NotFound, "The User does not exist.")]
+        ////[SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
+        ////[SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
         public HttpResponseMessage UsersDelete(string name)
         {
             HttpResponseMessage retVal;
@@ -363,8 +364,8 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpGet]
         [Route("users")]
         [Authorize(Roles = nameof(Role.Administrator))]
-        [SwaggerResponse(HttpStatusCode.OK, "The list was retrieved successfully.", typeof(IReadOnlyList<UserData>))]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.OK, "The list was retrieved successfully.", typeof(IReadOnlyList<UserData>))]
+        //[SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
         public HttpResponseMessage UsersGet()
         {
             IReadOnlyList<UserData> users = SecurityManager.Users.Select(u => new UserData(u)).ToList().AsReadOnly();
@@ -379,10 +380,10 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpGet]
         [Route("users/{name}")]
         [Authorize(Roles = nameof(Role.Administrator))]
-        [SwaggerResponse(HttpStatusCode.OK, "The User was retrieved successfully.", typeof(UserData))]
-        [SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.NotFound, "The User does not exist.")]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.OK, "The User was retrieved successfully.", typeof(UserData))]
+        //[SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.NotFound, "The User does not exist.")]
+        //[SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
         public HttpResponseMessage UsersGetName(string name)
         {
             HttpResponseMessage retVal;
@@ -417,11 +418,11 @@ namespace OpenIIoT.Core.Security.WebApi
         [HttpPatch]
         [Route("users/{name}")]
         [Authorize]
-        [SwaggerResponse(HttpStatusCode.OK, "The User was updated.", typeof(UserData))]
-        [SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.NotFound, "The User does not exist.")]
-        [SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
-        [SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
+        //[SwaggerResponse(HttpStatusCode.OK, "The User was updated.", typeof(UserData))]
+        //[SwaggerResponse(HttpStatusCode.BadRequest, "One or more parameters are invalid.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.NotFound, "The User does not exist.")]
+        //[SwaggerResponse(HttpStatusCode.Unauthorized, "Authorization denied.", typeof(string))]
+        //[SwaggerResponse(HttpStatusCode.InternalServerError, "An unexpected error was encountered during the operation.", typeof(Result))]
         public HttpResponseMessage UsersUpdate(string name, [FromBody]UserUpdateData data)
         {
             HttpResponseMessage retVal;
