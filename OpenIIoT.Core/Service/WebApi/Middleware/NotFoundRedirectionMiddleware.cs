@@ -91,11 +91,18 @@ namespace OpenIIoT.Core.Service.WebApi
         /// <returns>The result of the asynchronous middleware function.</returns>
         public async override Task Invoke(IOwinContext context)
         {
-            await Next.Invoke(context);
-
-            if (context.Response.StatusCode == 404 && !IsRedirectSuppressedRoute(new PathString(context.Request.Path.Value)))
+            try
             {
-                context.Response.Redirect(GetPathString(WebApiConstants.NotFoundRoutePrefix).Value);
+                await Next.Invoke(context);
+
+                if (context.Response.StatusCode == 404 && !IsRedirectSuppressedRoute(new PathString(context.Request.Path.Value)))
+                {
+                    context.Response.Redirect(GetPathString(WebApiConstants.NotFoundRoutePrefix).Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Exception(ex);
             }
         }
 

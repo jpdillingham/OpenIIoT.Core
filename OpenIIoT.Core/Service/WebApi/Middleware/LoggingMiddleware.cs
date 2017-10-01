@@ -89,26 +89,33 @@ namespace OpenIIoT.Core.Service.WebApi.Middleware
         /// <returns>The result of the asynchronous middleware function.</returns>
         public async override Task Invoke(IOwinContext context)
         {
-            Stopwatch benchmark = new Stopwatch();
-            benchmark.Start();
-
-            await Next.Invoke(context);
-
-            benchmark.Stop();
-
-            if (logger.IsInfoEnabled)
+            try
             {
-                string logString = GetLogString(context, benchmark.Elapsed);
-                PathString apiPathString = new PathString("/" + (WebApiService.StaticConfiguration.Root + "/" + WebApiConstants.ApiRoutePrefix).Trim('/'));
+                Stopwatch benchmark = new Stopwatch();
+                benchmark.Start();
 
-                if (context.Request.Path.StartsWithSegments(apiPathString))
+                await Next.Invoke(context);
+
+                benchmark.Stop();
+
+                if (logger.IsInfoEnabled)
                 {
-                    logger.Info(logString);
+                    string logString = GetLogString(context, benchmark.Elapsed);
+                    PathString apiPathString = new PathString("/" + (WebApiService.StaticConfiguration.Root + "/" + WebApiConstants.ApiRoutePrefix).Trim('/'));
+
+                    if (context.Request.Path.StartsWithSegments(apiPathString))
+                    {
+                        logger.Info(logString);
+                    }
+                    else if (logger.IsDebugEnabled)
+                    {
+                        logger.Debug(logString);
+                    }
                 }
-                else if (logger.IsDebugEnabled)
-                {
-                    logger.Debug(logString);
-                }
+            }
+            catch (Exception ex)
+            {
+                logger.Exception(ex);
             }
         }
 
